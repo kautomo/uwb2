@@ -82,8 +82,8 @@ int ANCHOR_REFRESH_COUNT_set=5;
 /* Private variables ---------------------------------------------------------*/
 
 //==============================================================================
-// printf() Ãâ·ÂÀ¸·Î »ç¿ëÇÒ uartÃÊ±âÈ­ ÈÄ ¾Æ·¡ ÄÚµå Ãß°¡ 
-/************ ÇÁ·ÎÁ§Æ® Option Target Use MicroLIB Ã¼Å©ÇØ¾ßÇÔ *******************/
+// printf() ì¶œë ¥ìœ¼ë¡œ ì‚¬ìš©í•  uartì´ˆê¸°í™” í›„ ì•„ë˜ ì½”ë“œ ì¶”ê°€ 
+/************ í”„ë¡œì íŠ¸ Option Target Use MicroLIB ì²´í¬í•´ì•¼í•¨ *******************/
 //==============================================================================
 /* Private function prototypes -----------------------------------------------*/
 #ifdef __GNUC__
@@ -111,7 +111,7 @@ void dwt_dumpregisters(char *str, size_t strSize)
         str += cnt = sprintf(str,"reg[%02X]=%02X%02X%02X%02X%02X",i,buff[4], buff[3], buff[2], buff[1], buff[0] ) ;
         str += cnt = sprintf(str,"\n") ;
     }
-
+    // test_1
     //reg 0x20
     for(i=0; i<=32; i+=4)
     {
@@ -244,7 +244,7 @@ void Tag_Measure_Dis(void)
         dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
         /* Write frame data to DW1000 and prepare transmission. See NOTE 7 below. */
         tx_poll_msg[ALL_MSG_SN_IDX] = frame_seq_nb;
-        tx_poll_msg[ALL_MSG_TAG_IDX] = TAG_ID;	// ±âÁö±¹Àº TAG_ID°¡ Æ÷ÇÔµÈ ÅÂ±× Á¤º¸¸¦ ¼ö½ÅÇÏ°í, ±âÁö±¹ÀÌ ÇØ´ç ÅÂ±×¿¡ ÀÀ´äÇÒ ¶§ TAG_IDµµ ÁöÁ¤ÇØ¾ß ÇÏ¸ç, ÀÏÄ¡ÇÏ´Â °æ¿ì TAG_ID¸¸ Ã³¸®µË´Ï´Ù.
+        tx_poll_msg[ALL_MSG_TAG_IDX] = TAG_ID;	// ê¸°ì§€êµ­ì€ TAG_IDê°€ í¬í•¨ëœ íƒœê·¸ ì •ë³´ë¥¼ ìˆ˜ì‹ í•˜ê³ , ê¸°ì§€êµ­ì´ í•´ë‹¹ íƒœê·¸ì— ì‘ë‹µí•  ë•Œ TAG_IDë„ ì§€ì •í•´ì•¼ í•˜ë©°, ì¼ì¹˜í•˜ëŠ” ê²½ìš° TAG_IDë§Œ ì²˜ë¦¬ë©ë‹ˆë‹¤.
 
         dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0);
         dwt_writetxfctrl(sizeof(tx_poll_msg), 0);
@@ -254,7 +254,7 @@ void Tag_Measure_Dis(void)
 
         //GPIO_SetBits(GPIOA,GPIO_Pin_2);
         //TODO
-        dwt_rxenable(0);// ³ªÁß¿¡ Ãß°¡µÇ´Â ³»¿ëÀÎµ¥, ±âº»ÀûÀ¸·Î tx ÀÌÈÄ¿¡ rx°¡ ÀÚµ¿À¸·Î ÀüÈ¯µÇ¾î¾ß ÇÕ´Ï´Ù. ±×·¯³ª ÇöÀç µğ¹ö±×¿¡¼­´Â ÀÚµ¿À¸·Î ¿­¸®Áö ¾Ê´Â °ÍÀ¸·Î È®ÀÎµÇ¾úÀ¸¸ç, ¿©±â¼­´Â rx°¡ °­Á¦·Î ¿­¸®°Ô µË´Ï´Ù.
+        dwt_rxenable(0);// ë‚˜ì¤‘ì— ì¶”ê°€ë˜ëŠ” ë‚´ìš©ì¸ë°, ê¸°ë³¸ì ìœ¼ë¡œ tx ì´í›„ì— rxê°€ ìë™ìœ¼ë¡œ ì „í™˜ë˜ì–´ì•¼ í•©ë‹ˆë‹¤. ê·¸ëŸ¬ë‚˜ í˜„ì¬ ë””ë²„ê·¸ì—ì„œëŠ” ìë™ìœ¼ë¡œ ì—´ë¦¬ì§€ ì•ŠëŠ” ê²ƒìœ¼ë¡œ í™•ì¸ë˜ì—ˆìœ¼ë©°, ì—¬ê¸°ì„œëŠ” rxê°€ ê°•ì œë¡œ ì—´ë¦¬ê²Œ ë©ë‹ˆë‹¤.
 		tick1=portGetTickCount();
         /* We assume that the transmission is achieved correctly, poll for reception of a frame or error/timeout. See NOTE 8 below. */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_ERR)))
@@ -278,7 +278,7 @@ void Tag_Measure_Dis(void)
                 dwt_readrxdata(rx_buffer, frame_len, 0);
             }
 
-            if(rx_buffer[ALL_MSG_TAG_IDX] != TAG_ID)	// °¨Áö TAG_ID
+            if(rx_buffer[ALL_MSG_TAG_IDX] != TAG_ID)	// ê°ì§€ TAG_ID
                 continue;
             rx_buffer[ALL_MSG_TAG_IDX] = 0;
 
@@ -418,7 +418,7 @@ int main(void)
 	uint8 temp;
 	int itemp;
 	
-	// ÀÌ°Å Ãß°¡ÇØ¾ß ÇÔ(¾î¼Àºí¸®ÆÄÀÏ¿¡¼­ È£ÃâÇÏ³ª ¾ÈµÇ´Â º¸µå ÀÖÀ½)
+	// ì´ê±° ì¶”ê°€í•´ì•¼ í•¨(ì–´ì…ˆë¸”ë¦¬íŒŒì¼ì—ì„œ í˜¸ì¶œí•˜ë‚˜ ì•ˆë˜ëŠ” ë³´ë“œ ìˆìŒ)
 	SystemInit();
 	
 	/* Start with board specific hardware init. */
@@ -572,7 +572,7 @@ int main(void)
 						tof_dtu = (int64)((Ra * Rb - Da * Db) / (Ra + Rb + Da + Db));
 						tof = tof_dtu * DWT_TIME_UNITS;
 						distance = tof * SPEED_OF_LIGHT;
-						distance = distance - dwt_getrangebias(config.chan,(float)distance, config.prf);// °Å¸® »©±â º¸Á¤ °è¼ö
+						distance = distance - dwt_getrangebias(config.chan,(float)distance, config.prf);// ê±°ë¦¬ ë¹¼ê¸° ë³´ì • ê³„ìˆ˜
                         // sprintf(dist_str, "dis: %3.2f m", distance);
                         //printf("before kalman fliter Distance:%3.2f m\r\n",rx_buffer[12],final_distance);
 #ifdef ANC_KALMAN_F_ENABLE	
@@ -581,11 +581,11 @@ int main(void)
 #endif	
 						//  sprintf(dist_str, "dis: %3.2f m", distance);
 						//    printf("after kalman fliter Distance:%3.2f m\r\n",rx_buffer[12],final_distance);
-                        // °è»ê °á°ú¸¦ TAG·Î º¸³»±â
+                        // ê³„ì‚° ê²°ê³¼ë¥¼ TAGë¡œ ë³´ë‚´ê¸°
 						itemp = (int)(distance*100);
 						distance_msg[10] = itemp/100;
-                        // a=x;  // Á¤¼ö ºÎºĞÀ» ÃëÇÏ´Â ÀÚµ¿ À¯Çü º¯È¯
-						distance_msg[11] = itemp%100; 	// 100À» °öÇÑ ÈÄ ³ª¸ÓÁö 100À» ÃëÇÏ¿© ¼Ò¼öÁ¡ ÀÌÇÏ 2ÀÚ¸®¸¦ ±¸ÇÕ´Ï´Ù.
+                        // a=x;  // ì •ìˆ˜ ë¶€ë¶„ì„ ì·¨í•˜ëŠ” ìë™ ìœ í˜• ë³€í™˜
+						distance_msg[11] = itemp%100; 	// 100ì„ ê³±í•œ í›„ ë‚˜ë¨¸ì§€ 100ì„ ì·¨í•˜ì—¬ ì†Œìˆ˜ì  ì´í•˜ 2ìë¦¬ë¥¼ êµ¬í•©ë‹ˆë‹¤.
 						distance_msg[12] = anthor_index;
 						distance_msg[ALL_MSG_SN_IDX] = frame_seq_nb;
 						distance_msg[ALL_MSG_TAG_IDX] = tag_index;
@@ -826,8 +826,8 @@ int main(void)
 					dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
 				}
 			}
-			// °¡´ÉÇÑ ¹®Á¦´Â TAG°¡ Semaphore¸¦ ¼ö½ÅÇÑ ÈÄ ÀÌ¸¦ ÇØÁ¦ÇÏÁö ¾Ê°í ³×Æ®¿öÅ©¸¦ ¶°³ª¼­ ¸¶½ºÅÍ TAG°¡ ¼¼¸¶Æ÷¾î¸¦ ´Ù½Ã °¡Á®¿ÀÁö ¸øÇÏ´Â °ÍÀÔ´Ï´Ù.
-			//	ÀÌ¸¦ À§ÇØ¼­´Â Å¸ÀÌ¸Ó¸¦ ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù. ÀÏÁ¤ ½Ã°£ÀÌ Áö³­ ÈÄ¿¡µµ ¿©ÀüÈ÷ TAG°¡ ±×·¸Áö ¾ÊÀº °æ¿ì Semaphore¸¦ ¼ö½ÅÇÏ°í Semaphore¸¦ ÇØÁ¦ÇÏ´Â °æ¿ì °­Á¦·Î Ãë¼ÒÇØ¾ß ÇÕ´Ï´Ù.
+			// ê°€ëŠ¥í•œ ë¬¸ì œëŠ” TAGê°€ Semaphoreë¥¼ ìˆ˜ì‹ í•œ í›„ ì´ë¥¼ í•´ì œí•˜ì§€ ì•Šê³  ë„¤íŠ¸ì›Œí¬ë¥¼ ë– ë‚˜ì„œ ë§ˆìŠ¤í„° TAGê°€ ì„¸ë§ˆí¬ì–´ë¥¼ ë‹¤ì‹œ ê°€ì ¸ì˜¤ì§€ ëª»í•˜ëŠ” ê²ƒì…ë‹ˆë‹¤.
+			//	ì´ë¥¼ ìœ„í•´ì„œëŠ” íƒ€ì´ë¨¸ë¥¼ êµ¬í˜„í•´ì•¼ í•©ë‹ˆë‹¤. ì¼ì • ì‹œê°„ì´ ì§€ë‚œ í›„ì—ë„ ì—¬ì „íˆ TAGê°€ ê·¸ë ‡ì§€ ì•Šì€ ê²½ìš° Semaphoreë¥¼ ìˆ˜ì‹ í•˜ê³  Semaphoreë¥¼ í•´ì œí•˜ëŠ” ê²½ìš° ê°•ì œë¡œ ì·¨ì†Œí•´ì•¼ í•©ë‹ˆë‹¤.
 			//if all tag have serviced by master tag
 			//master tag can measure the distance
 			if(Sum_Tag_Semaphore_request() == 0)
@@ -838,7 +838,7 @@ int main(void)
 		}
 		else //slave tags
 		{
-			// SLAVE TAG´Â ±âº»ÀûÀ¸·Î MASTER TAG°¡ Åë°è Á¤º¸¸¦ º¸³»°í ¼¼¸¶Æ÷¾î¸¦ ÇØÁ¦ÇÒ ¶§±îÁö ±â´Ù¸®¸é¼­ ½ÃÀÛµË´Ï´Ù.
+			// SLAVE TAGëŠ” ê¸°ë³¸ì ìœ¼ë¡œ MASTER TAGê°€ í†µê³„ ì •ë³´ë¥¼ ë³´ë‚´ê³  ì„¸ë§ˆí¬ì–´ë¥¼ í•´ì œí•  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ë©´ì„œ ì‹œì‘ë©ë‹ˆë‹¤.
 			dwt_setrxtimeout(0);
 			dwt_rxenable(0);
 			/* Poll for reception of a frame or error/timeout. See NOTE 7 below. */
@@ -975,7 +975,7 @@ static void distance_mange(void)
 	
 	
 	
-	// 1. SDK ¿¡¼­ Á¦°øÇÑ À§Ä¡ ±¸ÇÏ±â
+	// 1. SDK ì—ì„œ ì œê³µí•œ ìœ„ì¹˜ êµ¬í•˜ê¸°
 	if(GetLocation(&tag_best_solution, 0, &(AnchorList[0]), &(Anthordistance[0])) != -1)
 ///	if(GetLocation(&tag_best_solution, 1, &(AnchorList[0]), &(Anthordistance[0])) != -1)
     {
@@ -1011,7 +1011,7 @@ static void distance_mange(void)
 */	
 
 	
-	// 2. 4A3D ¼Ò½º¿¡¼­ Á¦°øÇÑ À§Ä¡ ±¸ÇÏ±â
+	// 2. 4A3D ì†ŒìŠ¤ì—ì„œ ì œê³µí•œ ìœ„ì¹˜ êµ¬í•˜ê¸°
 ////	newRange();
 	
 	
@@ -1330,11 +1330,11 @@ void assert_failed(uint8_t* file, uint32_t line)
 PUTCHAR_PROTOTYPE
 {
     /* Place your implementation of fputc here */
-    /* ÇåSR¼Ä´æÆ÷ÖĞµÄTC±êÖ¾ */
+    /* í—ŒSRì…ë‹¸í¬æ«“ë¨TCê¹ƒç¾š */
 
     USART_ClearFlag(EVAL_COM1,USART_FLAG_TC);
     /* e.g. write a character to the USART */
-    USART_SendData(EVAL_COM1, (uint8_t) ch);	// »ç¿ëÇÒ Æ÷Æ®·Î ¼öÁ¤
+    USART_SendData(EVAL_COM1, (uint8_t) ch);	// ì‚¬ìš©í•  í¬íŠ¸ë¡œ ìˆ˜ì •
     /* Loop until the end of transmission */
     while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
     {}
@@ -1408,3 +1408,4 @@ PUTCHAR_PROTOTYPE
   * @}
   */
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+
