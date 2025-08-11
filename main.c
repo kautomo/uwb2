@@ -137,7 +137,7 @@ void dwt_dumpregisters(char *str, size_t strSize)
     }
 #else
     //reg 0x24
-    for(i=0; i<=12; i+=4)
+    for(i=0; i<=2; i+=4)
     {
         reg = dwt_read32bitoffsetreg(0x24,i) ;
         str += cnt = sprintf(str,"reg[%02X:%02X]=%08X",0x24,i,reg) ;
@@ -1408,4 +1408,5 @@ PUTCHAR_PROTOTYPE
   * @}
   */
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+
 
